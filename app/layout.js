@@ -1,9 +1,11 @@
 import { cookies } from "next/headers";
 import "./globals.css";
 import AppProvider from "@/context/AppContext";
+import Header from "@/ui/header/Header";
+import Footer from "@/ui/footer/Footer";
 
 export const metadata = {
-  title: "Stach",
+  title: "Stack",
   description: "A real time chat project",
 };
 
@@ -15,9 +17,13 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <AppProvider>
         <body
-          className={`flex flex-col min-h-svh ${theme==="dark"? "dark" : ""}`}
+          className={`flex flex-col min-h-svh min-w-svw ${
+            theme === "dark" ? "dark" : ""
+          } duration-150 ease-in-out`}
         >
+          <Header />
           {children}
+          <Footer />
         </body>
       </AppProvider>
     </html>

@@ -3,14 +3,40 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --dimmed: #686868;
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --dimmed: #a8a8a8;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+.page{
+  @apply grow min-w-svw flex flex-col px-4;
+}
+
+.box{
+  @apply max-w-[90rem] w-full mx-auto;
+}
+
+.dimmed-text{
+  @apply text-sm text-[var(--dimmed)];
+}
+
+.button-primary{
+  @apply cursor-pointer flex justify-center items-center border-1 w-[6rem] py-2 rounded-md text-[var(--foreground)] bg-[var(--background)] hover:bg-[var(--foreground)] hover:text-[var(--background)] duration-200;
+}
+
+.button-secondary{
+  @apply cursor-pointer flex justify-center items-center border-1 w-[6rem] py-2 rounded-md bg-[var(--foreground)] text-[var(--background)] hover:text-[var(--foreground)] hover:bg-[var(--background)] duration-200;
+}
+
+.input-field{
+  @apply px-4 py-4 outline-none border-1 border-[var(--dimmed)] rounded-md;
 }
