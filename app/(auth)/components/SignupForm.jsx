@@ -12,6 +12,11 @@ export default function SignupForm() {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const signupData = Object.fromEntries(formdata);
+    const username = loginData.username.trim()
+    const signupDataUpdated = {
+      ...signupData,
+      username
+    }
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`,
@@ -20,7 +25,7 @@ export default function SignupForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(signupData),
+          body: JSON.stringify(signupDataUpdated),
           credentials: "include",
         }
       );
@@ -42,7 +47,7 @@ export default function SignupForm() {
 
   return (
     <form
-      className="flex flex-col w-full max-w-[32rem]"
+      className="flex flex-col w-full max-w-[25rem]"
       onSubmit={handleSignUp}
     >
       <label htmlFor="username" className="mb-2 sm:text-xl">
