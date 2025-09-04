@@ -3,6 +3,7 @@ import "./globals.css";
 import AppProvider from "@/context/AppContext";
 import Header from "@/ui/header/Header";
 import Footer from "@/ui/footer/Footer";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Stack",
@@ -21,6 +22,7 @@ export default async function RootLayout({ children }) {
             theme === "dark" ? "dark" : ""
           } duration-150 ease-in-out`}
         >
+          <Toaster />
           <Header />
           {children}
           <Footer />

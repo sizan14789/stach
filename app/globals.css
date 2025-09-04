@@ -2,19 +2,23 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --dimmed: #686868;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+  --border: #CCCCCC;
+  --accent: #0070F3;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --dimmed: #a8a8a8;
+  --background: #121212;
+  --text-primary: #E0E0E0;
+  --text-secondary: #B0B0B0;
+  --border: #444444;
+  --accent: #888888;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--text-primary);
 }
 
 .page{
@@ -25,18 +29,18 @@ body {
   @apply max-w-[90rem] w-full mx-auto;
 }
 
-.dimmed-text{
-  @apply text-sm text-[var(--dimmed)];
+.text-secondary{
+  @apply text-sm text-[var(--text-secondary)];
 }
 
 .button-primary{
-  @apply cursor-pointer flex justify-center items-center border-1 w-[6rem] py-2 rounded-md text-[var(--foreground)] bg-[var(--background)] hover:bg-[var(--foreground)] hover:text-[var(--background)] duration-200;
+  @apply cursor-pointer flex justify-center items-center border-1 border-[var(--border)] w-[6rem] py-2 rounded-md text-[var(--text-primary)] bg-[var(--background)] hover:bg-[var(--text-primary)] hover:text-[var(--background)] duration-200;
 }
 
 .button-secondary{
-  @apply cursor-pointer flex justify-center items-center border-1 w-[6rem] py-2 rounded-md bg-[var(--foreground)] text-[var(--background)] hover:text-[var(--foreground)] hover:bg-[var(--background)] duration-200;
+  @apply cursor-pointer flex justify-center items-center border-1 border-[var(--border)] w-[6rem] py-2 rounded-md bg-[var(--text-primary)] text-[var(--background)] hover:text-[var(--text-primary)] hover:bg-[var(--background)] duration-200;
 }
 
 .input-field{
-  @apply px-4 py-4 outline-none border-1 border-[var(--dimmed)] rounded-md;
+  @apply px-4 py-4 outline-none border-1 border-[var(--border)] rounded-md;
 }

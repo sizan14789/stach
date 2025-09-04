@@ -1,10 +1,50 @@
 "use client";
 
+import { useAppContext } from "@/context/AppContext";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
 export default function LoginForm() {
+  const router = useRouter()
+  const { setLocalUser } = useAppContext();
+
+  const handleLogIn = async (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.target);
+    const loginData = Object.fromEntries(formdata);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginData),
+          credentials: "include",
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        setLocalUser(data);
+        router.push('/');
+        toast.success("Logged in");
+      } else {
+        toast.error(data.error);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal error");
+    }
+  };
+
   return (
-    <form className="flex flex-col w-full max-w-[32rem]">
-      
-      <label htmlFor="username" className="mb-2 sm:text-xl" >Username or Email</label>
+    <form className="flex flex-col w-full max-w-[32rem]" onSubmit={handleLogIn}>
+      <label htmlFor="username" className="mb-2 sm:text-xl">
+        Username or Email
+      </label>
       <input
         type="text"
         required
@@ -13,7 +53,9 @@ export default function LoginForm() {
         className="input-field mb-5"
       />
 
-      <label htmlFor="username" className="mb-2 sm:text-xl" >Password</label>
+      <label htmlFor="username" className="mb-2 sm:text-xl">
+        Password
+      </label>
       <input
         type="password"
         required
@@ -22,9 +64,7 @@ export default function LoginForm() {
         className="input-field mb-5"
       />
 
-      <button className="button-secondary !w-[8rem] ">
-        Log in
-      </button>
+      <button className="button-secondary !w-[8rem] ">Log in</button>
     </form>
   );
 }
