@@ -24,10 +24,6 @@ export default function AppProvider({ children }) {
     getUser();
   }, []);
 
-  // useEffect(()=>{
-  //   console.log(localUser);
-  // }, [localUser])
-
   const props = { setLocalUser, localUser };
 
   return <AppContext.Provider value={props}>{children}</AppContext.Provider>;

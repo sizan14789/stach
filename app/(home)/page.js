@@ -1,7 +1,11 @@
 import getUser from "@/lib/getUser";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await getUser();
+
+  if(!user)
+    redirect('/login');
 
   return (
     <div className="flex h-full justify-center items-center" >

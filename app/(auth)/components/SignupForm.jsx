@@ -12,7 +12,7 @@ export default function SignupForm() {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const signupData = Object.fromEntries(formdata);
-    const username = loginData.username.trim()
+    const username = signupData.username.trim()
     const signupDataUpdated = {
       ...signupData,
       username

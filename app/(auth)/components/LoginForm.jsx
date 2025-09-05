@@ -47,7 +47,7 @@ export default function LoginForm() {
 
   return (
     <form className="flex flex-col w-full max-w-[25rem]" onSubmit={handleLogIn}>
-      <label htmlFor="username" className="mb-2 sm:text-xl">
+      <label htmlFor="username" className="mb-2 text-[var(--text-secondary)] !text-sm">
         Username or Email
       </label>
       <input
@@ -58,7 +58,7 @@ export default function LoginForm() {
         className="input-field mb-5"
       />
 
-      <label htmlFor="username" className="mb-2 sm:text-xl">
+      <label htmlFor="username" className="mb-2 text-[var(--text-secondary)] !text-sm">
         Password
       </label>
       <input
