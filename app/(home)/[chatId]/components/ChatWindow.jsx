@@ -1,10 +1,11 @@
 import { useAppContext } from "@/context/AppContext";
 import { useChatContext } from "@/context/ChatLayoutContext";
+import Blank from "@/ui/placeholder/Blank";
 import { useEffect } from "react";
 
 export default function ChatWindow() {
   const { localUser } = useAppContext();
-  const { socket, localMessages, setLocalMessages } = useChatContext()
+  const { socket, localMessages, setLocalMessages } = useChatContext();
 
   useEffect(() => {
     if (!socket) return;
@@ -16,14 +17,15 @@ export default function ChatWindow() {
     return () => socket.off("text received");
   }, [socket]);
 
-  if (localUser && localMessages) {
+  if (!(localUser && localMessages)) return <Blank />;
+  
+  else {
     let prevMessageSenderId;
     let nextMessageSenderId;
 
     return (
       <div className="flex flex-col-reverse px-4 py-2 overflow-y-auto overflow-x-hidden gap-1 grow">
         {localMessages.map((curMessage, index) => {
-  
           const { _id, chat, sender, text, read, createdAt } = curMessage;
           const selfSent = sender._id === localUser._id;
 

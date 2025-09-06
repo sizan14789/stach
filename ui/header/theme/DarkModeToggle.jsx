@@ -25,7 +25,8 @@ export default function DarkModeToggle() {
     document.body.classList.add(theme);
   };
 
-  if (localTheme)
+  if (!localTheme) return;
+  else
     return (
       <div onClick={handleToggle} className="cursor-pointer p-1">
         {localTheme == "dark" ? (

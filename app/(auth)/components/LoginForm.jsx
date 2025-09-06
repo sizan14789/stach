@@ -25,6 +25,7 @@ export default function LoginForm() {
           headers: {
             "Content-Type": "application/json",
           },
+          cache: "no-store",
           body: JSON.stringify(loginDataUpdated),
           credentials: "include",
         }

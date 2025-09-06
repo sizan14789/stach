@@ -1,6 +1,7 @@
 import getUser from "@/lib/getUser";
 import getToken from "@/lib/getToken";
 import ChatContainer from "./components/ChatContainer";
+import Blank from "@/ui/placeholder/Blank";
 
 const getChatInfo = async (chatId, token) => {
   try {
@@ -47,7 +48,7 @@ export default async function ChatId({ params }) {
   const { chatId } = await params;
   const chatInfo = await getChatInfo(chatId, token);
   const messages = await getMessages(chatId, token);
-  const user = await getUser()
+  const user = await getUser();
 
   if (user && chatInfo && messages)
     return (

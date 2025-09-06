@@ -1,5 +1,6 @@
 import { useAppContext } from "@/context/AppContext";
 import { useChatContext } from "@/context/ChatLayoutContext";
+import Blank from "@/ui/placeholder/Blank";
 
 export default function PartnerNavbar() {
   const { localUser } = useAppContext();
@@ -10,7 +11,8 @@ export default function PartnerNavbar() {
   );
   const username = partner?.username;
 
-  if (localUser)
+  if (!localUser) return <Blank />;
+  else
     return (
       <div className=" h-[5rem] p-4 flex shadow-[0_3px_3px_-3px_#00000024]">
         <div className="flex gap-2">

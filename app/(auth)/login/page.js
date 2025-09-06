@@ -14,7 +14,7 @@ export default async function Login(){
         <h2 className="text-3xl mb-4 sm:mb-8 md:text-[5svw] xl:text-[4svw] ">Welcome to Stack</h2>
         <LoginForm />
         <p className="text-secondary mt-6">
-          Don't have an account? <Link href="/signup" className="font-bold text-[var(--accent)]">Sign up</Link>
+          Don&apos;t have an account? <Link href="/signup" className="font-bold text-[var(--accent)]">Sign up</Link>
         </p>
       </div>
     </div>
