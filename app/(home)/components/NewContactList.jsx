@@ -1,21 +1,39 @@
+import { useAppContext } from "@/context/AppContext";
 import { useChatContext } from "@/context/ChatLayoutContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function NewContactList() {
-  const [ createWindow, setCreateWindow] = useState(false);
-  const { searchContactsList, setLocalChatsList } = useChatContext();
+  const [createWindow, setCreateWindow] = useState(false);
+  const { localChatsList, setLocalChatsList  } = useAppContext()
+  const { searchContactsList, setNewContactSearch } =
+    useChatContext();
   const [selectedContactId, setSelectedContactId] = useState();
   const router = useRouter();
 
   const handleContactClick = (id) => {
+    const chatExists = localChatsList.find((chat) => {
+      return (
+        id === chat.participants[0]._id ||
+        id === chat.participants[1]._id
+      );
+    });
+
+    if (chatExists) {
+      const chatId = chatExists._id;
+      setNewContactSearch("")
+      router.push(`/${chatId}`);
+      return;
+    }
+
     setSelectedContactId(id);
     setCreateWindow(true);
   };
 
   const handleConfirmation = async () => {
     setCreateWindow(false);
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chats`, {
         method: "POST",
@@ -28,7 +46,8 @@ export default function NewContactList() {
       if (res.status === 200) {
         const data = await res.json();
         toast.success("Contact added");
-        setLocalChatsList((prev) => [data,...prev]);
+        setLocalChatsList((prev) => [data, ...prev]);
+        setNewContactSearch("")
         router.push(`/${data._id}`);
       }
     } catch (error) {

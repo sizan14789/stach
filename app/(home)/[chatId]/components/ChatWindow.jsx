@@ -1,13 +1,31 @@
-export default function ChatWindow({ chatInfo, user, localMessages }) {
-  if (localMessages) {
+import { useAppContext } from "@/context/AppContext";
+import { useChatContext } from "@/context/ChatLayoutContext";
+import { useEffect } from "react";
+
+export default function ChatWindow() {
+  const { localUser } = useAppContext();
+  const { socket, localMessages, setLocalMessages } = useChatContext()
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("text received", (text) => {
+      setLocalMessages((prev) => [text, ...prev]);
+    });
+
+    return () => socket.off("text received");
+  }, [socket]);
+
+  if (localUser && localMessages) {
     let prevMessageSenderId;
     let nextMessageSenderId;
 
     return (
       <div className="flex flex-col-reverse px-4 py-2 overflow-y-auto overflow-x-hidden gap-1 grow">
         {localMessages.map((curMessage, index) => {
+  
           const { _id, chat, sender, text, read, createdAt } = curMessage;
-          const selfSent = sender._id === user._id;
+          const selfSent = sender._id === localUser._id;
 
           if (index !== 0)
             prevMessageSenderId = localMessages[index - 1]?.sender?._id;
@@ -27,9 +45,7 @@ export default function ChatWindow({ chatInfo, user, localMessages }) {
                   className="h-[2.5rem] aspect-square flex justify-center items-center rounded-full"
                   style={{ backgroundColor: sender.avatarBg }}
                 >
-                  <h1 className="text-white pb-1">
-                    {sender.username[0]}
-                  </h1>
+                  <h1 className="text-white pb-1">{sender.username[0]}</h1>
                 </figure>
               ) : (
                 <figure className="h-[2.5rem] aspect-square"></figure>

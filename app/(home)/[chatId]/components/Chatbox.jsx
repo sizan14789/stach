@@ -1,12 +1,15 @@
 "use client";
 
+import { useAppContext } from "@/context/AppContext";
 import { useChatContext } from "@/context/ChatLayoutContext";
 import toast from "react-hot-toast";
 import { BsFillSendFill } from "react-icons/bs";
 import { CiImageOn } from "react-icons/ci";
 
-export default function ChatBox({ chatInfo, user, setLocalMessages }) {
-  const { setLocalChatList } = useChatContext()
+export default function ChatBox() {
+  const { setLocalChatsList, localUser } = useAppContext();
+  const { localChatInfo, setLocalMessages } =
+    useChatContext();
 
   const handleTextSending = async (e) => {
     e.preventDefault();
@@ -14,12 +17,50 @@ export default function ChatBox({ chatInfo, user, setLocalMessages }) {
     const textData = Object.fromEntries(formdata).message.trim();
 
     const postBody = {
-      chat: chatInfo._id,
-      sender: user._id,
+      chat: localChatInfo._id,
+      sender: localUser._id,
       text: textData,
     };
 
-    try {
+    const syncLastText = async () => {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/chats/update/${localChatInfo._id}`,
+        {
+          method: "POST",
+          body: JSON.stringify({ text: textData }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+    };
+
+    const syncLastTextUi = () => {
+      const chatId = localChatInfo._id;
+      setLocalChatsList((prev) => {
+        prev.forEach((chat) => {
+          if (chatId === chat._id) chat.lastText = textData;
+        });
+        return prev;
+      });
+    };
+
+    const syncLocalUi = () => {
+      const newMessage = {
+        ...postBody,
+        sender: {
+          _id: localUser._id,
+          username: localUser.username,
+          avatarBg: localUser.avatarBg,
+        },
+        _id: JSON.stringify(crypto.randomUUID()),
+      };
+      setLocalMessages((prev) => [newMessage, ...prev]);
+      e.target.message.value = "";
+    };
+
+    const syncDatabase = async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/messages`,
         {
@@ -32,41 +73,26 @@ export default function ChatBox({ chatInfo, user, setLocalMessages }) {
         }
       );
 
-      const syncLastText = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/chats/update/${chatInfo._id}`,
-        {
-          method: "POST",
-          body: JSON.stringify({text: textData}),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+      if (res.status === 200) {
+        return res;
+      } else {
+        return false;
+      }
+    };
 
-      setLocalMessages((prev) => [
-        {
-          ...postBody,
-          sender: {
-            _id: user._id,
-            username: user.username,
-            avatarBg: user.avatarBg
-          },
-          _id: JSON.stringify(Math.floor(Math.random()*99999))
-        },
-        ...prev,
-      ]);
-
-
+    try {
+      syncLocalUi();
+      syncLastTextUi();
+      const res = await syncDatabase();
 
       if (res.status === 200) {
-        toast("Sent");
-        e.target.message.value = "";
+        await syncLastText();
       } else {
         toast.error("Failed to send");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Internal error");
     }
   };
 

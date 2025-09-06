@@ -7,6 +7,9 @@ const AppContext = createContext(null);
 export default function AppProvider({ children }) {
   const [localUser, setLocalUser] = useState(null);
 
+  // chat related
+  const [localChatsList, setLocalChatsList] = useState([]); // contacts list for client
+
   useEffect(() => {
     const getUser = async () => {
       const res = await fetch(
@@ -24,7 +27,7 @@ export default function AppProvider({ children }) {
     getUser();
   }, []);
 
-  const props = { setLocalUser, localUser };
+  const props = { setLocalUser, localUser, localChatsList, setLocalChatsList };
 
   return <AppContext.Provider value={props}>{children}</AppContext.Provider>;
 }

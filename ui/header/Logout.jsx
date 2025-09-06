@@ -18,7 +18,6 @@ export default function Logout() {
       }
     );
     if (res.status === 200) {
-      setLocalUser(null)
       toast.success("Logged out");
       router.push("/");
     } else {

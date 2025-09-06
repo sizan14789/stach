@@ -1,18 +1,27 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect } from "react";
 import ChatBox from "./Chatbox";
 import ChatWindow from "./ChatWindow";
 import PartnerNavbar from "./PartnerNavbar";
+import { useChatContext } from "@/context/ChatLayoutContext";
+import { useAppContext } from "@/context/AppContext";
 
-export default function ChatContainer({chatInfo, user, messages}) {
-  const [localMessages, setLocalMessages] = useState(messages);
+export default function ChatContainer({user, chatInfo, messages}) {
+  const { setLocalUser } = useAppContext()
+  const { setLocalMessages, setLocalChatInfo } = useChatContext();
+
+  useEffect(()=>{
+    setLocalUser(user)
+    setLocalMessages(messages)
+    setLocalChatInfo(chatInfo)
+  }, [])
 
   return (
     <>
-      <PartnerNavbar chatInfo={chatInfo} user={user} />
-      <ChatWindow chatInfo={chatInfo} user={user} localMessages={localMessages} />
-      <ChatBox chatInfo={chatInfo} user={user} setLocalMessages={setLocalMessages} />
+      <PartnerNavbar />
+      <ChatWindow />
+      <ChatBox />
     </>
   );
 }

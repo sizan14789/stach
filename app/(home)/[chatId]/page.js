@@ -47,12 +47,12 @@ export default async function ChatId({ params }) {
   const { chatId } = await params;
   const chatInfo = await getChatInfo(chatId, token);
   const messages = await getMessages(chatId, token);
-  const user = await getUser();
+  const user = await getUser()
 
-  if (chatInfo && messages)
+  if (user && chatInfo && messages)
     return (
       <div className="flex flex-col w-full overflow-hidden">
-        <ChatContainer chatInfo={chatInfo} user={user} messages={messages} />
+        <ChatContainer user={user} chatInfo={chatInfo} messages={messages} />
       </div>
     );
 }

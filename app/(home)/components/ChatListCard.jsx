@@ -7,18 +7,19 @@ export default function ChatListCard({ curChat }) {
   const url = useParams()?.chatId;
 
   if (localUser && curChat) {
+    
     const { _id, groupChat, participants, lastText } = curChat;
-    const otherPerson = participants.find(
+    const otherPerson = participants?.find(
       (cur) => cur.username !== localUser?.username
     );
-    
+
     return (
       <Link
         href={`/${_id}`}
         className="cursor-pointer border-b-[.5px] border-b-[var(--border)] hover:border-b-[var(--accent)] duration-200"
       >
         <div
-          className={`flex gap-4 p-4 items-center hover:grayscale-0 ${url ?? _id===url? "" : "grayscale-100" }`}
+          className={`flex gap-4 p-4 items-center hover:grayscale-0 ${_id===url? "" : "grayscale-100" }`}
         >
           <figure className="flex items-center justify-center">
             <h2
